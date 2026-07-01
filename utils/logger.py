@@ -1,6 +1,8 @@
 import logging
 from pathlib import Path
 
+from config import LOG_LEVEL
+
 
 def get_logger(name: str) -> logging.Logger:
     """
@@ -14,7 +16,7 @@ def get_logger(name: str) -> logging.Logger:
     if logger.handlers:
         return logger
 
-    logger.setLevel(logging.INFO)
+    logger.setLevel(getattr(logging, LOG_LEVEL, logging.INFO))
 
     log_dir = Path("logs")
     log_dir.mkdir(exist_ok=True)
@@ -25,12 +27,14 @@ def get_logger(name: str) -> logging.Logger:
     )
 
     console_handler = logging.StreamHandler()
+    console_handler.setLevel(getattr(logging, LOG_LEVEL, logging.INFO))
     console_handler.setFormatter(formatter)
 
     file_handler = logging.FileHandler(
         log_dir / "cow_god_facts.log",
         encoding="utf-8",
     )
+    file_handler.setLevel(getattr(logging, LOG_LEVEL, logging.INFO))
     file_handler.setFormatter(formatter)
 
     logger.addHandler(console_handler)

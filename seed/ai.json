@@ -1,0 +1,35 @@
+[
+    {
+        "fact_key": "AI_0001",
+        "category_en": "Artificial Intelligence",
+        "category_ja": "人工知能",
+        "fact_en": "The term 'Artificial Intelligence' was coined in 1956 at the Dartmouth Conference.",
+        "fact_ja": "「人工知能（AI）」という言葉は1956年のダートマス会議で生まれました。",
+        "difficulty": "Easy",
+        "tags_en": "history,ai",
+        "tags_ja": "歴史,AI",
+        "enabled": true
+    },
+    {
+        "fact_key": "AI_0002",
+        "category_en": "Machine Learning",
+        "category_ja": "機械学習",
+        "fact_en": "Machine learning allows computers to improve through experience without being explicitly programmed.",
+        "fact_ja": "機械学習では、コンピューターは明示的にプログラムされなくても経験から学習できます。",
+        "difficulty": "Easy",
+        "tags_en": "ml,basics",
+        "tags_ja": "機械学習,基礎",
+        "enabled": true
+    },
+    {
+        "fact_key": "AI_0003",
+        "category_en": "Artificial Intelligence",
+        "category_ja": "人工知能",
+        "fact_en": "The Turing Test was proposed by Alan Turing in 1950 as a way to evaluate whether a machine can exhibit intelligent behavior indistinguishable from a human.",
+        "fact_ja": "チューリングテストは、1950年にアラン・チューリングによって提案され、人間と区別できない知的な振る舞いを機械が示せるかを評価する方法です。",
+        "difficulty": "Medium",
+        "tags_en": "turing,test,history",
+        "tags_ja": "チューリング,テスト,歴史",
+        "enabled": true
+    }
+]
