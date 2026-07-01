@@ -1,7 +1,6 @@
-import random
 import sqlite3
 
-from database.db import get_connection
+from database.connection import PARAM, get_connection, placeholder
 from models.fact import Fact
 from utils.logger import get_logger
 
@@ -27,14 +26,14 @@ class FactRepository:
             query = """
                 SELECT *
                 FROM facts
-                WHERE enabled = 1
+                WHERE enabled
             """
 
             parameters: list = []
 
             if categories:
-                placeholders = ",".join("?" * len(categories))
-                query += f" AND category_en IN ({placeholders})"
+
+                query += f" AND category_en IN ({placeholder(len(categories))})"
                 parameters.extend(categories)
 
             if not allow_repeat:
@@ -46,7 +45,8 @@ class FactRepository:
             """
 
             with get_connection() as connection:
-                cursor = connection.execute(query, parameters)
+                cursor = connection.cursor()
+                cursor.execute(query, parameters)
 
                 row = cursor.fetchone()
 
@@ -72,15 +72,17 @@ class FactRepository:
 
         try:
             with get_connection() as connection:
-                connection.execute(
-                    """
+                query = f"""
                     UPDATE facts
                     SET
                         posted_count = posted_count + 1,
                         last_posted = CURRENT_TIMESTAMP,
                         updated_at = CURRENT_TIMESTAMP
-                    WHERE fact_key = ?
-                    """,
+                    WHERE fact_key = {PARAM}
+                    """
+                cursor = connection.cursor()
+                cursor.execute(
+                    query,
                     (fact_key,),
                 )
 

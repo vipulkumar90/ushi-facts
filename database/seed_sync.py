@@ -1,8 +1,8 @@
 import json
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
-from database.db import get_connection
+from database.connection import PARAM, get_connection, placeholder
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -51,13 +51,13 @@ def _upsert_fact(connection: sqlite3.Connection, fact: dict) -> None:
     Insert a new fact or update editable fields if it already exists.
     """
     cursor = connection.cursor()
-
-    cursor.execute(
-        """
+    query = f"""
         SELECT id
         FROM facts
-        WHERE fact_key = ?
-        """,
+        WHERE fact_key = {PARAM}
+        """
+    cursor.execute(
+        query,
         (fact["fact_key"],),
     )
 
@@ -65,22 +65,22 @@ def _upsert_fact(connection: sqlite3.Connection, fact: dict) -> None:
 
     if exists:
         logger.debug("Updating %s", fact["fact_key"])
-
-        cursor.execute(
-            """
+        query = f"""
             UPDATE facts
             SET
-                category_en=?,
-                category_ja=?,
-                fact_en=?,
-                fact_ja=?,
-                difficulty=?,
-                tags_en=?,
-                tags_ja=?,
-                enabled=?,
+                category_en={PARAM},
+                category_ja={PARAM},
+                fact_en={PARAM},
+                fact_ja={PARAM},
+                difficulty={PARAM},
+                tags_en={PARAM},
+                tags_ja={PARAM},
+                enabled={PARAM},
                 updated_at=CURRENT_TIMESTAMP
-            WHERE fact_key=?
-            """,
+            WHERE fact_key={PARAM}
+            """
+        cursor.execute(
+            query,
             (
                 fact["category_en"],
                 fact["category_ja"],
@@ -89,7 +89,7 @@ def _upsert_fact(connection: sqlite3.Connection, fact: dict) -> None:
                 fact["difficulty"],
                 fact["tags_en"],
                 fact["tags_ja"],
-                int(fact["enabled"]),
+                fact["enabled"],
                 fact["fact_key"],
             ),
         )
@@ -98,7 +98,7 @@ def _upsert_fact(connection: sqlite3.Connection, fact: dict) -> None:
         logger.debug("Inserting %s", fact["fact_key"])
 
         cursor.execute(
-            """
+            f"""
             INSERT INTO facts (
                 fact_key,
                 category_en,
@@ -110,7 +110,7 @@ def _upsert_fact(connection: sqlite3.Connection, fact: dict) -> None:
                 tags_ja,
                 enabled
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES ({placeholder(9)})
             """,
             (
                 fact["fact_key"],
@@ -121,6 +121,6 @@ def _upsert_fact(connection: sqlite3.Connection, fact: dict) -> None:
                 fact["difficulty"],
                 fact["tags_en"],
                 fact["tags_ja"],
-                int(fact["enabled"]),
+                fact["enabled"],
             ),
         )

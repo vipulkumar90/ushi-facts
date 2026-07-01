@@ -1,4 +1,5 @@
 from database.initializer import initialize_database
+from services.discord_service import DiscordService
 from services.fact_service import FactService
 from utils.logger import get_logger
 
@@ -18,39 +19,29 @@ def main() -> None:
 
         # Create fact service
         fact_service = FactService()
+        discord_service = DiscordService()
 
         # Retrieve next fact
         fact = fact_service.get_next_fact()
 
         if fact is None:
-            logger.warning("No fact available to post.")
+            logger.warning("No eligible facts found.")
             return
 
-        logger.info("Fact selected successfully.")
+        logger.info("Selected fact: %s", fact.fact_key)
 
-        print("\n" + "=" * 60)
-        print(f"Fact Key    : {fact.fact_key}")
-        print(f"Category    : {fact.category_en}")
-        print(f"Difficulty  : {fact.difficulty}")
-        print()
-        print("English:")
-        print(fact.fact_en)
-        print()
-        print("Japanese:")
-        print(fact.fact_ja)
-        print("=" * 60 + "\n")
+        discord_service.send_fact(fact)
 
-        # Simulate a successful Discord post
-        logger.info("Simulating successful Discord post...")
+        logger.info("Discord message sent successfully.")
 
         fact_service.mark_posted(fact.fact_key)
 
         logger.info(
-            "Fact '%s' marked as posted successfully.",
+            "Updated posting history for '%s'.",
             fact.fact_key,
         )
 
-        logger.info("Application finished successfully.")
+        logger.info("Application completed successfully.")
 
     except Exception:
         logger.exception("Application terminated unexpectedly.")

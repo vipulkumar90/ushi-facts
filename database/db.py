@@ -1,7 +1,7 @@
 # database/db.py
 
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 from utils.logger import get_logger
 

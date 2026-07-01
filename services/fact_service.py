@@ -1,10 +1,6 @@
+from config import ALLOW_REPEAT, DEFAULT_CATEGORIES, FACT_SELECTION_STRATEGY
 from database.fact_repository import FactRepository
 from models.fact import Fact
-from config import (
-    ALLOW_REPEAT,
-    DEFAULT_CATEGORIES,
-    FACT_SELECTION_STRATEGY,
-)
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
