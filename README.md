@@ -147,7 +147,7 @@ You can run Ushi Facts either locally on your own machine or automatically using
 #### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/ushi-facts.git
+git clone https://github.com/vipulkumar90/ushi-facts.git
 cd ushi-facts
 ```
 
