@@ -2,8 +2,8 @@ name: Post Daily Fact
 
 on:
   schedule:
-    # 09:00 JST, 12:00 JST, 20:00 JST
-    - cron: "0 0,3,11 * * *"
+    # 12:00 JST
+    - cron: "0 3 * * *"
 
   workflow_dispatch:
 
